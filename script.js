@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
   
   let score = 0;
   let isFiring = false;
-  let targetSpeedX = 10;
-  let targetSpeedY = 10;
+  let targetSpeedX = 5;
+  let targetSpeedY = 5;
   let targetPosX = Math.random() * 350;
   let targetPosY = Math.random() * 400;
   
