@@ -1,3 +1,12 @@
+// connect server
+const socket = io("https://joy-bangla-server.onrender.com");
+
+socket.on("updateUsers", ({ activeUsers, highestActiveUsers }) => {
+    document.getElementById("active-users").textContent = activeUsers;
+    document.getElementById("highest-users").textContent = highestActiveUsers;
+});
+
+//
 document.addEventListener("DOMContentLoaded", function() {
   const joybangla = document.getElementById("joybangla");
   const yamate = document.getElementById("yamate");
