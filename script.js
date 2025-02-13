@@ -1,39 +1,39 @@
 document.addEventListener("DOMContentLoaded", function() {
-  const joybangla = document.getElementById("joybangla")
-  const yamate = document.getElementById("yamate")
+  const joybangla = document.getElementById("joybangla");
+  const yamate = document.getElementById("yamate");
   
   const target = document.getElementById("target");
   const stone = document.getElementById("stone");
   const scoreDisplay = document.getElementById("score");
-  
-  
-  const joybanglaPlay =() => {
-    joybangla.play()
-  }
-  
-  const yamatePlay = () => {
-    console.log("yamate triggered ")
-    yamate.play()
-  }
+  const popupContainer = document.getElementById("popup-container");
   
   let score = 0;
   let isFiring = false;
-  let targetSpeedX = 5;
+  let targetSpeedX = 5; // টার্গেটের প্রাথমিক গতি
   let targetSpeedY = 5;
-  let targetPosX = Math.random() * 350;
-  let targetPosY = Math.random() * 400;
+  let targetPosX = Math.random() * 300;
+  let targetPosY = Math.random() * 350;
+  let attempts = 100;
   
-  // Move the target with bouncing effect
   function moveTarget() {
     targetPosX += targetSpeedX;
     targetPosY += targetSpeedY;
     
-    // Bounce on walls
+    // **টার্গেট যদি স্ক্রিনের বাইরে চলে যায়, তাহলে এটাকে ফিরিয়ে আনা**
     if (targetPosX <= 0 || targetPosX >= 350) {
       targetSpeedX *= -1;
+      targetPosX = Math.max(0, Math.min(350, targetPosX)); // এক্স পজিশন সীমাবদ্ধ করা
     }
     if (targetPosY <= 0 || targetPosY >= 400) {
       targetSpeedY *= -1;
+      targetPosY = Math.max(0, Math.min(400, targetPosY)); // ওয়াই পজিশন সীমাবদ্ধ করা
+    }
+    
+    // **র্যান্ডম গতির পরিবর্তন কিন্তু সীমাবদ্ধ**
+    if (Math.random() < 0.05) {
+      let speedChange = Math.random() * 2 - 1; // -1 থেকে 1 পর্যন্ত র্যান্ডম সংখ্যা
+      targetSpeedX = Math.max(-8, Math.min(8, targetSpeedX + speedChange)); // স্পিড সীমাবদ্ধ
+      targetSpeedY = Math.max(-8, Math.min(8, targetSpeedY + speedChange)); // স্পিড সীমাবদ্ধ
     }
     
     target.style.left = targetPosX + "px";
@@ -42,22 +42,20 @@ document.addEventListener("DOMContentLoaded", function() {
     requestAnimationFrame(moveTarget);
   }
   
-  moveTarget(); // Start movement
+  moveTarget(); // **টার্গেট মুভ করা শুরু করবে**
   
-  // Fire the stone
   stone.addEventListener("click", function() {
-    // joy bangla
-    joybanglaPlay()
+    if (isFiring || attempts <= 0) return;
     
-    if (isFiring) return;
+    attempts--;
+    joybangla.play();
     isFiring = true;
     
     let posY = 0;
     const interval = setInterval(() => {
-      posY += 5;
+      posY += 7;
       stone.style.transform = `translateY(-${posY}px)`;
       
-      // Collision Detection
       let stoneRect = stone.getBoundingClientRect();
       let targetRect = target.getBoundingClientRect();
       
@@ -68,26 +66,29 @@ document.addEventListener("DOMContentLoaded", function() {
         stoneRect.bottom > targetRect.top
       ) {
         score++;
-        
-        // sojon haranor bedona
         scoreDisplay.textContent = score;
-        
         clearInterval(interval);
         resetStone();
-        yamatePlay()
+        yamate.play();
+        showPopup();
       }
       
-      // If stone reaches top, reset position
       if (posY > 800) {
         clearInterval(interval);
         resetStone();
       }
-    }, 20);
+    }, 15);
   });
   
-  // Reset stone position
   function resetStone() {
     stone.style.transform = "translateY(0)";
     isFiring = false;
+  }
+  
+  function showPopup() {
+    popupContainer.style.display = "block";
+    setTimeout(() => {
+      popupContainer.style.display = "none";
+    }, 700);
   }
 });

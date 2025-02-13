@@ -50,11 +50,11 @@ h1 {
 
 #stone {
     
-    height: 50px;
+    height: 20px;
     
     
     position: relative;
-    transition: transform 0.2s linear;
+    transition: transform 0.01s linear;
 }
 
 .developer {
@@ -66,4 +66,17 @@ h1 {
   margin-top: 10px;
   font-size: 30px;
   font-weight: 15px;
+}
+#popup-container {
+    position: fixed;
+    top: 30%;
+    
+    display: none;
+    z-index: 1000;
+}
+
+#popup-image {
+    width: 100%;
+    height: auto;
+    
 }
