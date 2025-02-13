@@ -89,6 +89,6 @@ document.addEventListener("DOMContentLoaded", function() {
     popupContainer.style.display = "block";
     setTimeout(() => {
       popupContainer.style.display = "none";
-    }, 700);
+    }, 1000);
   }
 });
